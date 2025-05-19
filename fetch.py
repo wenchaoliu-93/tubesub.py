@@ -32,17 +32,18 @@ def write_to_file(file_name, string):
 
 
 def main():
-    video_id = 'R7MdvMLz6Qo'
+    video_id = 'pqBqdNIPrbo'
+    ytt_api = YouTubeTranscriptApi()
     # foreign transcript
-    transcript_list = YouTubeTranscriptApi.list_transcripts(video_id)
+    transcript_list = ytt_api.list(video_id)
     srt_formatter = SRTFormatter()
     # english transcript
-    get_transcript = YouTubeTranscriptApi.get_transcript(video_id)
+    get_transcript = ytt_api.fetch(video_id, languages=['en'])
     en = srt_formatter.format_transcript(get_transcript)
     with open('en' + '_single.srt', 'w', encoding='utf-8') as srt_file:
         srt_file.write(en)
 
-    language_list = {'de', 'fr', 'es', 'zh-Hans'}
+    language_list = {'es', 'zh-Hans'}
     for language in language_list:
         find_transcript = transcript_list.find_transcript(['en'])
         translated_transcript = find_transcript.translate(language)
